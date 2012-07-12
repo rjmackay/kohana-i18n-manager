@@ -370,16 +370,145 @@ class I18n_Controller extends Controller {
 		//chmod($file, 0755);
 	}
 	
-	private function __write_file($lang, $file, $content)
+	/**
+	 * Generate a php file from the php
+	 */
+	public function po2php()
 	{
-		$content = mb_convert_encoding($content, 'UTF-8');
+		$options = $_GET;
+		
+		// Get languages
+		if (isset($options['lang']))
+		{
+			if (is_dir(APPPATH.'i18n/po/po-'.$options['lang']))
+			{
+				$languages = array($options['lang']);
+			}
+			else
+			{
+				die('Language "'.$options['lang'].'" not present');
+			}
+		}
+		else
+		{
+			$i18ndir =  dir(APPPATH.'i18n/po/');
+			$languages = array();
+			while(false !== ($entry = $i18ndir->read()))
+			{
+				if ($entry == '.' OR $entry == '..' OR substr($entry,0,3) != 'po-' OR substr($entry,0,1) == '.')
+					continue;
+				
+				if (is_dir(APPPATH.'i18n/po/'.$entry))
+					$languages[] = str_replace('po-','',$entry);
+			}
+		}
+
+		$parser = new POParser();
+
+		// 
+		foreach ($languages as $language)
+		{
+			if (strtolower($language) == strtolower($this->source_language)) continue;
+			
+			// Get language files
+			$files = array();
+			if (isset($options['group']))
+			{
+				$path = APPPATH."i18n/po/po-{$language}/{$options['group']}.po";
+				if (file_exists($path))
+				{
+					$files[] = $path;
+				}
+			}
+			else
+			{
+				$i18ndir =  dir(APPPATH.'i18n/po/po-'.$language);
+				while(false !== ($entry = $i18ndir->read()))
+				{
+					if ($entry == '.' OR $entry == '..')
+						continue;
+					
+					if (substr($entry, -3, 3) == '.po')
+						$files[] = APPPATH.'i18n/po/po-'.$language.'/'.$entry;
+				}
+			}
+			
+			// Get source translations
+			foreach ($files as $path)
+			{
+				$group = pathinfo($path, PATHINFO_FILENAME);
+				
+				list($header, $entries) = $parser->parse($path);
+				
+				$lang = $this->__build_lang_array($entries, $group);
+				
+				$content = new View('i18n/lang_file');
+				$content->header = $header;
+				$content->lang = $lang;
+				$content->language = $language;
+				$content->group = $group;
+				
+				//echo $content;
+				$this->__write_php_file($language, $group, $content);
+				
+			}
+		}
+	}
+
+	private function __build_lang_array($entries)
+	{
+		$output = array();
+		foreach ($entries as $entry)
+		{
+			$k = $entry['references'][0];
+			$v = $entry['msgstr'];
+			
+			if ($v == '') continue;
+			
+			$k = explode('.',$k);
+			array_shift($k);
+			
+			if (count($k) == 1)
+			{
+				$output[$k[0]] = stripcslashes($v);
+			}
+			else
+			{
+				$parent = &$output;
+				for ($i = 0; $i < count($k)-1; $i++)
+				{
+					if (!isset($parent[$k[$i]]))
+						$parent[$k[$i]] = array();
+					
+					if (!is_array($parent[$k[$i]]))
+						break;
+					
+					$parent = &$parent[$k[$i]];
+				}
+				$parent[$k[count($k)-1]] = stripcslashes($v);
+			}
+			
+		}
+		
+		return $output;
+	}
+	
+	private function __write_php_file($lang, $file, $content)
+	{
+		$content = mb_convert_encoding((string)$content, 'UTF-8');
+		$dir = APPPATH."i18n/$lang/";
+		
+		if (!is_dir($dir))
+		{
+			mkdir($dir);
+		}
 		
 		// Write the contents to the file
-		$file = APPPATH.$this->__lang_to_file($lang, $file);
+		$file = "$dir$file.php";
 		
 		file_put_contents($file, $content);
 		
-		chmod($file, 0755);
+		//chmod($file, 0755);
 	}
 	
 	private function __file_to_lang($file)

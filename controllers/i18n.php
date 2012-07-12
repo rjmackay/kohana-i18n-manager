@@ -247,7 +247,7 @@ class I18n_Controller extends Controller {
 			$languages = array();
 			while(false !== ($entry = $i18ndir->read()))
 			{
-				if ($entry == '.' OR $entry == '..' OR $entry == 'po')
+				if ($entry == '.' OR $entry == '..' OR $entry == 'po' OR $entry == 'tools' OR substr($entry,0,1) == '.')
 					continue;
 				
 				if (is_dir(APPPATH.'i18n/'.$entry))

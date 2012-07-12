@@ -5,7 +5,11 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: <?php echo date('Y-m-d H:iO') ?>\n"
+<?php if ($language == $pot_language) : ?>
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+<?php else: ?>
+"PO-Revision-Date: <?php echo date('Y-m-d H:iO') ?>\n"
+<?php endif; ?>
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"

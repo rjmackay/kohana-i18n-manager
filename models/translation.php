@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 
-class Model_Translation extends ORM {
+class Translation_Model extends ORM {
 	
 	public function __construct($id = NULL)
 	{
@@ -45,7 +45,7 @@ class Model_Translation extends ORM {
 			PRIMARY KEY (`id`),
 			KEY `key` (`key`),
 			KEY `language` (`language`)
-		      ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci AUTO_INCREMENT=1;')->execute();
+		) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci AUTO_INCREMENT=1;')->execute();
 	}
 	
 }

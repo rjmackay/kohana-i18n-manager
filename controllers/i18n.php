@@ -8,10 +8,6 @@ class I18n_Controller extends Controller {
 	{
 		parent::__construct();
 		header('Content-type: text/plain');
-	}
-	
-	public function before()
-	{
 		echo "+ ---------- start ----------- +\n\n";
 	}
 	
@@ -330,6 +326,7 @@ class I18n_Controller extends Controller {
 				$this->__write_po_file($language, $group, $content);
 			}
 		}
+		$this->after();
 	}
 	
 	private function __collapse_lang_array($lang, $prefix = '')
@@ -453,6 +450,7 @@ class I18n_Controller extends Controller {
 				
 			}
 		}
+		$this->after();
 	}
 
 	private function __build_lang_array($entries)

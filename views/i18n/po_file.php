@@ -1,10 +1,10 @@
-#. extracted from <?php echo $source; ?>
+#. extracted from <?php echo $pot_source; ?>, <?php echo $source; ?>
 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: <?php echo date('Y-m-d H:i:s T') ?>\n"
+"POT-Creation-Date: <?php echo date('Y-m-d H:iO') ?>\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

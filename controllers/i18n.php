@@ -322,11 +322,12 @@ class I18n_Controller extends Controller {
 				$content->messages = $messages;
 				$content->pot_messages = $pot;
 				$content->source = $language.'/'.$group.'.php';
+				$content->pot_source = $this->source_language.'/'.$group.'.php';
 				$content->language = $language;
 				$content->group = $group;
 				$content->pot_language = $this->source_language;
 				
-				$this->__write_po_file($language,$group,$content);
+				$this->__write_po_file($language, $group, $content);
 			}
 		}
 	}
@@ -360,7 +361,9 @@ class I18n_Controller extends Controller {
 		}
 		
 		// Write the contents to the file
-		$file = "$dir$file.po";
+		$ext = ($lang == $this->source_language) ? 'pot' : 'po';
+		
+		$file = "$dir$file.$ext";
 		
 		file_put_contents($file, $content);
 		

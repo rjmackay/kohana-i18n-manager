@@ -300,7 +300,8 @@ class I18n_Controller extends Controller {
 		{
 			foreach ($pot_messages as $group => $pot)
 			{
-				// Load translations
+				// Load translations (only if not source lang)
+				$messages = array();
 				if (strtolower($language) != strtolower($this->source_language))
 				{
 					//if ($path = Kohana::find_file('i18n/'.$language, $group))
@@ -315,11 +316,6 @@ class I18n_Controller extends Controller {
 							$messages = $this->__collapse_lang_array($lang, $group);
 						}
 					}
-				}
-				// If this is the source language just use a blank array
-				else
-				{
-					$messages = array();
 				}
 				
 				$content = new View('i18n/po_file');
@@ -356,14 +352,15 @@ class I18n_Controller extends Controller {
 	private function __write_po_file($lang, $file, $content)
 	{
 		$content = mb_convert_encoding((string)$content, 'UTF-8');
+		$dir = APPPATH."i18n/po/po-$lang/";
 		
-		if (!is_dir(APPPATH."i18n/po/$lang/"))
+		if (!is_dir($dir))
 		{
-			mkdir(APPPATH."i18n/po/$lang/");
+			mkdir($dir);
 		}
 		
 		// Write the contents to the file
-		$file = APPPATH."i18n/po/$lang/$file.po";
+		$file = "$dir$file.po";
 		
 		file_put_contents($file, $content);
 		

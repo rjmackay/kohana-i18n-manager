@@ -1,5 +1,5 @@
 # Kohana 2.x Internationalization Module
-
+<!--
 **Internationalization can be a pain**: send translation files off to different people, import them, consolidate them, copy keys between files, add keys to the language files, etc-- this module eases some of those pains.
 
 ## How to use:
@@ -35,7 +35,7 @@ Assuming you already have a database configured, it will automatically generate 
 This will remove all of the files from the APPPATH/i18n directory and will replace it with what is in the database. NOTE: If you are using source control, be sure to take into account checked in files and conflicts.
 
 		php index.php i18n/db_export
-		
+-->		
 ### Convert php language files to po files
 
 

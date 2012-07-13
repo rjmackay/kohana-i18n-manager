@@ -204,6 +204,13 @@ class POParser
                 }
             }
         }
+
+        // in case there was no new line at the EOF
+        if ($entry != array())
+        {
+          $entries[] = $entry;
+        }
+
         return array($headers, $entries);
     }
 }

@@ -29,7 +29,7 @@ $val = isset($messages[$key]) ? $messages[$key] : "";
 
 msgctxt "<?php echo addslashes($key); ?>"
 msgid "<?php echo addcslashes($source_val, $this->string_escape); ?>"
-msgstr "<?php echo addcslashes(str_replace("\r\n",'',$val), $this->string_escape); ?>"
+msgstr "<?php echo addcslashes(str_replace("\r\n","\n",$val), $this->string_escape); ?>"
 
 <?php
 }

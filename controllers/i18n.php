@@ -323,6 +323,7 @@ class I18n_Controller extends Controller {
 				$content->group = $group;
 				$content->pot_language = $this->source_language;
 				
+				echo sprintf("Generate po file for %s : %s\n", $language, $group);
 				$this->__write_po_file($language, $group, $content);
 			}
 		}
@@ -449,6 +450,7 @@ class I18n_Controller extends Controller {
 					
 					//echo $content;
 					$this->__write_php_file($language, $group, $content);
+					echo sprintf("Generate php lang file for %s : %s\n", $language, $group);
 				}
 			}
 		}

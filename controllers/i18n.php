@@ -439,15 +439,17 @@ class I18n_Controller extends Controller {
 				
 				$lang = $this->__build_lang_array($entries, $group);
 				
-				$content = new View('i18n/lang_file');
-				$content->header = $header;
-				$content->lang = $lang;
-				$content->language = $language;
-				$content->group = $group;
-				
-				//echo $content;
-				$this->__write_php_file($language, $group, $content);
-				
+				if (count($lang))
+				{
+					$content = new View('i18n/lang_file');
+					$content->header = $header;
+					$content->lang = $lang;
+					$content->language = $language;
+					$content->group = $group;
+					
+					//echo $content;
+					$this->__write_php_file($language, $group, $content);
+				}
 			}
 		}
 		$this->after();
@@ -462,9 +464,11 @@ class I18n_Controller extends Controller {
 			$v = $entry['msgstr'];
 			
 			if ($v == '') continue;
-			
+
 			$k = explode('.',$k);
 			array_shift($k);
+			
+			if (count($k) == 0) continue;
 			
 			if (count($k) == 1)
 			{

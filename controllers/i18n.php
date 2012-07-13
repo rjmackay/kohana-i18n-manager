@@ -4,6 +4,7 @@ class I18n_Controller extends Controller {
 	
 	public $source_language = 'en_US';
 	
+	public $string_escape = "\\\n\r\t\0\v\f\"";
 	public function __construct()
 	{
 		parent::__construct();

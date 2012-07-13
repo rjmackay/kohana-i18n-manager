@@ -28,8 +28,8 @@ $val = isset($messages[$key]) ? $messages[$key] : "";
 #: <?php echo $key; ?>
 
 msgctxt "<?php echo addslashes($key); ?>"
-msgid "<?php echo addcslashes($source_val,"\n\r\t\0\v\f\"\\"); ?>"
-msgstr "<?php echo addcslashes(str_replace("\r\n",'',$val),"\n\r\t\0\v\f\"\\"); ?>"
+msgid "<?php echo addcslashes($source_val, $this->string_escape); ?>"
+msgstr "<?php echo addcslashes(str_replace("\r\n",'',$val), $this->string_escape); ?>"
 
 <?php
 }

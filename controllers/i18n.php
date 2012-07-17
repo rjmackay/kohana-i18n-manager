@@ -357,7 +357,7 @@ class I18n_Controller extends Controller {
 		
 		if (!is_dir($dir))
 		{
-			mkdir($dir);
+			mkdir($dir,0777,TRUE);
 		}
 		
 		// Write the contents to the file
@@ -506,7 +506,7 @@ class I18n_Controller extends Controller {
 		
 		if (!is_dir($dir))
 		{
-			mkdir($dir);
+			mkdir($dir,0777,TRUE);
 		}
 		
 		// Write the contents to the file

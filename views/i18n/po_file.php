@@ -23,7 +23,13 @@ msgstr ""
 // @todo support for multi level arrays
 foreach ($pot_messages as $key => $source_val)
 {
-$val = isset($messages[$key]) ? $messages[$key] : "";
+	$val = isset($messages[$key]) ? $messages[$key] : "";
+	
+	// Strip out strings that are just copy/paste from en_US
+	if ($source_val == $val)
+	{
+		$val = "";
+	}
 ?>
 #: <?php echo $key; ?>
 

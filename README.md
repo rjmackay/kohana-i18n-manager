@@ -46,4 +46,9 @@ This will remove all of the files from the APPPATH/i18n directory and will repla
 
 		php index.php "i18n/po2php?lang=en_US&group=ui_main""
 
+### Requirements
 
+* A functioning Ushahidi install (this should installed in modules/)
+* PHP Beautifier (for formatting PHP output). Install as follows:
+
+		sudo pear install --alldeps channel://pear.php.net/php_beautifier-0.1.15

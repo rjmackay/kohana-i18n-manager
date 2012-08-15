@@ -501,6 +501,19 @@ class I18n_Controller extends Controller {
 	
 	private function __write_php_file($lang, $file, $content)
 	{
+		$content = (string)$content;
+		
+		require_once 'PHP/Beautifier.php';
+		$oBeautifier = new PHP_Beautifier();
+		$oBeautifier->addFilter('ArrayNested');
+		$oBeautifier->setIndentChar("\t");
+		$oBeautifier->setIndentNumber(1);
+		$oBeautifier->setNewLine("\n");
+		$oBeautifier->setInputString($content);
+		$oBeautifier->process(); // required
+		
+		$content = $oBeautifier->get();
+		
 		$content = mb_convert_encoding((string)$content, 'UTF-8');
 		$dir = APPPATH."i18n/$lang/";
 		

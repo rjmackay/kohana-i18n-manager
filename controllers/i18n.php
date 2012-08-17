@@ -442,18 +442,15 @@ class I18n_Controller extends Controller {
 				
 				$lang = $this->__build_lang_array($entries, $group);
 				
-				if (count($lang))
-				{
-					$content = new View('i18n/lang_file');
-					$content->header = $header;
-					$content->lang = $lang;
-					$content->language = $language;
-					$content->group = $group;
-					
-					//echo $content;
-					$this->__write_php_file($language, $group, $content);
-					echo sprintf("Generate php lang file for %s : %s\n", $language, $group);
-				}
+				$content = new View('i18n/lang_file');
+				$content->header = $header;
+				$content->lang = $lang;
+				$content->language = $language;
+				$content->group = $group;
+				
+				//echo $content;
+				$this->__write_php_file($language, $group, $content);
+				echo sprintf("Generate php lang file for %s : %s\n", $language, $group);
 			}
 		}
 		$this->after();

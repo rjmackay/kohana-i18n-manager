@@ -1,9 +1,10 @@
 #. extracted from <?php echo $pot_source; ?>, <?php echo $source; ?>
-
+#
+# Translators: 
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: Ushahidi-Localizations\n"
+"Report-Msgid-Bugs-To: http://github.com/ushahidi/Ushahidi-Localizations/issues\n"
 "POT-Creation-Date: <?php echo date('Y-m-d H:iO') ?>\n"
 <?php if ($language == $pot_language) : ?>
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"

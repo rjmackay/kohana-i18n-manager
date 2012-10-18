@@ -195,7 +195,7 @@ class POParser
                 }
             }
             else if ($line[0] === '"' && isset($entry['msgstr'])) {
-                $line = "\n" . preg_replace('/([^\\\\])\\\\n$/', "\$1\n", $this->_dequote($line));
+                $line = preg_replace('/([^\\\\])\\\\n$/', "\$1\n", $this->_dequote($line));
                 if (!is_array($entry['msgstr'])) {
                     $entry['msgstr'] .= $line;
                 }

@@ -48,7 +48,7 @@ This will remove all of the files from the APPPATH/i18n directory and will repla
 
 ### Requirements
 
-* A functioning Ushahidi install (this should installed in modules/)
+* A functioning Ushahidi install (this should be installed in modules/ and enabled in application/config/config.php)
 * PHP Beautifier (for formatting PHP output). Install as follows:
 
 		sudo pear install --alldeps channel://pear.php.net/php_beautifier-0.1.15

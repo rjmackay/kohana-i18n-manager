@@ -163,6 +163,26 @@ class I18n_Controller extends Controller {
 		
 		$file = "$dir$file.$ext";
 		
+		if (file_exists($file))
+		{
+			// Save to temp file
+			$fiveMBs = 5 * 1024 * 1024;
+			$tempfile = fopen("php://temp/maxmemory:$fiveMBs", 'r+');
+			fwrite($tempfile, $content);
+			rewind($tempfile);
+			
+			// Parse old and new files
+			$parser = new POParser();
+			list($header, $entries) = $parser->parse($tempfile);
+			list($old_header, $old_entries) = $parser->parse($file);
+			// If entries are identical, don't change the file
+			if ( $entries == $old_entries )
+			{
+				echo ".. unchanged, skipping\n";
+				return;
+			}
+		}
+		
 		file_put_contents($file, $content);
 		
 		//chmod($file, 0755);
@@ -319,6 +339,18 @@ class I18n_Controller extends Controller {
 		
 		// Write the contents to the file
 		$file = "$dir$file.php";
+		
+		if (file_exists($file))
+		{
+			// Load old file and compare
+			$old_contents = file_get_contents($file);
+			// If array text is identical, don't change the file
+			if ( substr($old_contents, strpos($old_contents, '$lang')) == substr($content, strpos($content, '$lang')) )
+			{
+				echo ".. unchanged, skipping\n";
+				return;
+			}
+		}
 		
 		file_put_contents($file, $content);
 		

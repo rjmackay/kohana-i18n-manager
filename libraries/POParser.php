@@ -61,14 +61,23 @@ class POParser
     public function parse($filename)
     {
         // basic file verification
-        if (!is_file($filename)) {
-            throw new Exception('The specified file does not exist.');
+        if (is_resource($filename) AND (get_resource_type($filename) == 'file' OR get_resource_type($filename) == 'stream'))
+        {
+          $lines = stream_get_contents($filename);
+          $lines = explode("\n", $lines);
         }
-        if (substr($filename, strrpos($filename, '.')) !== '.po') {
-            throw new Exception('The specified file is not a PO file.');
-        }
+        else
+        {
+          if (!is_file($filename)) {
+              throw new Exception('The specified file does not exist.');
+          }
+          if (substr($filename, strrpos($filename, '.')) !== '.po'
+              AND substr($filename, strrpos($filename, '.')) !== '.pot') {
+              throw new Exception('The specified file is not a PO file.');
+          }
 
-        $lines = file($filename, FILE_IGNORE_NEW_LINES);
+          $lines = file($filename, FILE_IGNORE_NEW_LINES);
+        }
 
         // on the first two lines I'm expecting msgid respectively msgstr,
         // both containing empty strings
@@ -112,6 +121,7 @@ class POParser
             if ($line === '') {
                 $entries[] = $entry;
                 $entry = array();
+                $prev_index = FALSE;
                 continue;
             }
             if ($line[0] == '#') {
@@ -168,6 +178,7 @@ class POParser
                 }
             }
             else if (strpos($line, 'msgid') === 0) {
+                $prev_index = 'msgid';
                 if ($line[5] === ' ') {
                     $entry['msgid'] = $this->_dequote(substr($line, 6));
                 }
@@ -182,6 +193,7 @@ class POParser
                 }
             }
             else if (strpos($line, 'msgstr') === 0) {
+                $prev_index = 'msgstr';
                 // no plural forms
                 if ($line[6] === ' ') {
                     $entry['msgstr'] = $this->_dequote(substr($line, 7));
@@ -194,13 +206,24 @@ class POParser
                     $entry['msgstr'][] = $this->_dequote(substr($line, strpos($line, ' ') + 1));
                 }
             }
-            else if ($line[0] === '"' && isset($entry['msgstr'])) {
+            // Further lines of msgid
+            else if ($line[0] === '"' && isset($entry['msgstr']) && $prev_index == 'msgstr') {
                 $line = preg_replace('/([^\\\\])\\\\n$/', "\$1\n", $this->_dequote($line));
                 if (!is_array($entry['msgstr'])) {
                     $entry['msgstr'] .= $line;
                 }
                 else {
                     $entry['msgstr'][count($entry['msgstr']) - 1] .= $line;
+                }
+            }
+            // Further lines of msgid
+            else if ($line[0] === '"' && isset($entry['msgid']) && $prev_index == 'msgid') {
+                $line = preg_replace('/([^\\\\])\\\\n$/', "\$1\n", $this->_dequote($line));
+                if (!is_array($entry['msgid'])) {
+                    $entry['msgid'] .= $line;
+                }
+                else {
+                    $entry['msgid'][count($entry['msgid']) - 1] .= $line;
                 }
             }
         }
